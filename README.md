@@ -9,9 +9,16 @@ Included In The Box
 Bookmarklets
 ------------
 
-### api.bookmarklet.js
+### bookmarklet.api.js
 
 Handy browser bookmarklet for the new Prototype PDocs.
+
+Element
+-------
+
+### element.next_until.js
+
+A Proto-port of [jquery.nextUntil.js](http://github.com/cowboy/jquery-misc/blob/master/jquery.ba-nextUntil.js) by [Ben Alman](http://benalman.com/).
 
 The End
 =======
