@@ -48,30 +48,29 @@
   });
   
   function updateOrCreate(form, element, value, shouldCreate) {
-    var elements = form.getInputs(null, element);
+    var elements = form.getInputs(null, element), el_length = elements.length;;
     
     // Fill form
-    if (elements.length == 0) {
+    if (el_length == 0) {
       // Possibly create?
       if (shouldCreate) {
-        if (value instanceof Array && element.substr(-2) == '[]') {
-          for (var i = 0, length = value.length; i < length; i++) form.insert(new Element('input', {type: 'hidden', name: element, value: value[i].toString()}));
-        }
-        else form.insert(new Element('input', {type: 'hidden', name: element, value: value.toString()}));
+        if (value instanceof Array && element.substr(-2) == '[]')
+          for (var i = 0, length = value.length; i < length; i++)
+            form.insert(new Element('input', {type: 'hidden', name: element, value: value[i].toString()}));
+        else
+          form.insert(new Element('input', {type: 'hidden', name: element, value: value.toString()}));
       }
     }
     else {
       // Change value
       if (value instanceof Array && element.substr(-2) == '[]') {
         // Populate current elements
-        for (var i = 0, length = elements.length; i < length; i++) elements[i].setValue((value[i] || elements[i].getValue()).toString());
+        for (var i = 0, length = elements.length; i < length; i++)
+          elements[i].setValue((value[i] || elements[i].getValue()).toString());
         // Any extras?
-        if (shouldCreate && value.length > elements.length) {
-          var el_length = elements.length;
-          for (var i = 0, length = value.length - el_length; i < length; i++) {
+        if (shouldCreate && value.length > elements.length)
+          for (var i = 0, length = value.length - el_length; i < length; i++)
             form.insert(new Element('input', {type: 'hidden', name: element, value: value[el_length + i].toString()}));
-          }
-        }
       }
       else elements[0].setValue(value.toString());
     }
