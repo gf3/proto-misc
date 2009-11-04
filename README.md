@@ -20,6 +20,13 @@ Element
 
 A Proto-port of [jquery.nextUntil.js](http://github.com/cowboy/jquery-misc/blob/master/jquery.ba-nextUntil.js) by [Ben Alman](http://benalman.com/).
 
+Form
+----
+
+### form.populate.js
+
+The opposite of serialization, populates a form from an Object, Hash, or String.
+
 The End
 =======
 
