@@ -85,7 +85,7 @@ Screw.Unit(function() {
         }
       }
       form.populate({lmfao: new MyClass('lol')});
-      expect($F('lmfao')).to(equal, 'lolg ');
+      expect($F('lmfao')).to(equal, 'lol');
     });
     
   });

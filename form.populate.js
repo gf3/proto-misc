@@ -1,42 +1,4 @@
 (function() {
-  function updateOrCreate(form, element, value, shouldCreate) {
-    var elements = form.getInputs(null, element);
-    
-    // Fill form
-    if (elements.length == 0) {
-      // Possibly create?
-      if (shouldCreate) {
-        if (value instanceof Array && element.substr(-2) == '[]') {
-          for (var i = 0, length = value.length; i < length; i++) form.insert(new Element('input', {type: 'hidden', name: element, value: value[i].toString()}));
-        }
-        else form.insert(new Element('input', {type: 'hidden', name: element, value: value.toString()}));
-      }
-    }
-    else {
-      // Change value
-      if (value instanceof Array && element.substr(-2) == '[]') {
-        // Populate current elements
-        for (var i = 0, length = elements.length; i < length; i++) elements[i].setValue((value[i] || elements[i].getValue()).toString());
-        // Any extras?
-        if (shouldCreate && value.length > elements.length) {
-          var el_length = elements.length;
-          for (var i = 0, length = value.length - el_length; i < length; i++) {
-            form.insert(new Element('input', {type: 'hidden', name: element, value: value[el_length + i].toString()}));
-          }
-        }
-      }
-      else elements[0].setValue(value.toString());
-    }
-  }
-  
-  function recursivelyPopulate(data, form, builder, shouldCreate) {
-    for (var i in data) {
-      if (data[i] instanceof Array) updateOrCreate(form, i + '[]', data[i], shouldCreate);
-      else if (Object.prototype.toString === data[i].toString) recursivelyPopulate(data[i], form, (builder.blank() ? i : builder + '[' + i + ']'), shouldCreate);
-      else updateOrCreate(form, (builder.blank() ? i : builder + '[' + i + ']'), data[i], shouldCreate);
-    }
-  }
-  
   Element.addMethods('FORM', {
     /**
      * Form#populate(data [, shouldCreate]) -> Self
@@ -84,4 +46,42 @@
       return form;
     }
   });
+  
+  function updateOrCreate(form, element, value, shouldCreate) {
+    var elements = form.getInputs(null, element);
+    
+    // Fill form
+    if (elements.length == 0) {
+      // Possibly create?
+      if (shouldCreate) {
+        if (value instanceof Array && element.substr(-2) == '[]') {
+          for (var i = 0, length = value.length; i < length; i++) form.insert(new Element('input', {type: 'hidden', name: element, value: value[i].toString()}));
+        }
+        else form.insert(new Element('input', {type: 'hidden', name: element, value: value.toString()}));
+      }
+    }
+    else {
+      // Change value
+      if (value instanceof Array && element.substr(-2) == '[]') {
+        // Populate current elements
+        for (var i = 0, length = elements.length; i < length; i++) elements[i].setValue((value[i] || elements[i].getValue()).toString());
+        // Any extras?
+        if (shouldCreate && value.length > elements.length) {
+          var el_length = elements.length;
+          for (var i = 0, length = value.length - el_length; i < length; i++) {
+            form.insert(new Element('input', {type: 'hidden', name: element, value: value[el_length + i].toString()}));
+          }
+        }
+      }
+      else elements[0].setValue(value.toString());
+    }
+  }
+  
+  function recursivelyPopulate(data, form, builder, shouldCreate) {
+    for (var i in data) {
+      if (data[i] instanceof Array) updateOrCreate(form, i + '[]', data[i], shouldCreate);
+      else if (Object.prototype.toString === data[i].toString) recursivelyPopulate(data[i], form, (builder.blank() ? i : builder + '[' + i + ']'), shouldCreate);
+      else updateOrCreate(form, (builder.blank() ? i : builder + '[' + i + ']'), data[i], shouldCreate);
+    }
+  }
 })();
