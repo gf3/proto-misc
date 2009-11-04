@@ -40,7 +40,7 @@
       if (Object.prototype.toString !== data.toString) return;
       
       // Populate!
-      recursivelyPopulate(data, form, '', shouldCreate);
+      recursivelyPopulate(form, data, '', shouldCreate);
       
       // Return
       return form;
@@ -77,11 +77,14 @@
     }
   }
   
-  function recursivelyPopulate(data, form, builder, shouldCreate) {
+  function recursivelyPopulate(form, data, builder, shouldCreate) {
     for (var i in data) {
-      if (data[i] instanceof Array) updateOrCreate(form, i + '[]', data[i], shouldCreate);
-      else if (Object.prototype.toString === data[i].toString) recursivelyPopulate(data[i], form, (builder.blank() ? i : builder + '[' + i + ']'), shouldCreate);
-      else updateOrCreate(form, (builder.blank() ? i : builder + '[' + i + ']'), data[i], shouldCreate);
+      if (data[i] instanceof Array)
+        updateOrCreate(form, i + '[]', data[i], shouldCreate);
+      else if (Object.prototype.toString === data[i].toString)
+        recursivelyPopulate(form, data[i], (builder.blank() ? i : builder + '[' + i + ']'), shouldCreate);
+      else
+        updateOrCreate(form, (builder.blank() ? i : builder + '[' + i + ']'), data[i], shouldCreate);
     }
   }
 })();
